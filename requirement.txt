@@ -1,6 +1,7 @@
 langchain
 streamlit
 Ollama
+ollama
 # pypdf
 langchain_community
 # PyPDF2
