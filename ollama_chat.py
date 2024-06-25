@@ -8,7 +8,10 @@ role_prompt = {
     "role": "system",
     "content": ("You are an expert software tester. When a user provides details of failed test case suites, "
                 "analyze the failures, identify the root cause of the errors, and offer detailed suggestions to resolve them. "
-                "Provide clear, concise, and actionable insights.")
+                "Provide clear, concise, and actionable insights in the following format:\n"
+                "Root cause:\n"
+                "explanation:\n"
+                "suggestion:")
 }
 
 if "messages" not in st.session_state:
