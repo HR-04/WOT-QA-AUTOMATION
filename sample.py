@@ -48,6 +48,13 @@ if prompt := st.chat_input():
     st.chat_message('assistant', avatar="🤖").write_stream(generate_response)
     st.session_state.messages.append({'role': 'assistant', 'content': st.session_state["full_message"]})
 
+# # Regenerate response button
+# if st.sidebar.button("Regenerate Response"):
+#     with st.spinner("Regenerating response..."):
+#         st.session_state["full_message"] = ""
+#         st.chat_message('assistant', avatar="🤖").write_stream(generate_response)
+#         st.session_state.messages[-1] = {'role': 'assistant', 'content': st.session_state["full_message"]}
+
 # Sidebar button to generate TypeScript solution code and explanation
 if st.sidebar.button("Generate Code"):
     with st.spinner("Generating code..."):
@@ -58,14 +65,12 @@ if st.sidebar.button("Generate Code"):
         generated_code = st.session_state["full_message"]
 
     st.code(generated_code, language='typescript')
-    print(generated_code)
 
     # Allow user to create a downloadable solution text file
-    if st.download_button(
+    if st.button("Create Solution Text File"):
+        st.download_button(
             label="Download Solution Code",
             data=generated_code,
             file_name="solution_code.txt",
-            # file_name="solution_code.ts",
             mime="text/plain"
-        ):
-        st.write('Thanks for downloading!')
+        )
