@@ -62,28 +62,13 @@ if st.sidebar.button("Generate Code"):
 
     # Allow user to create a solution text file
     if st.button("Create Solution Text File"):
-        # Example content for root cause, explanation, suggestion, and code explanation
-        root_cause = "Example root cause explanation"
-        explanation = "Example detailed explanation"
-        suggestion = "Example suggestions to resolve the issue"
-        code_explanation = "Example explanation of the generated solution code"
-
-        solution_text = (
-            f"Root cause:\n{root_cause}\n\n"
-            f"Explanation:\n{explanation}\n\n"
-            f"Suggestion:\n{suggestion}\n\n"
-            f"Solution code:\n{generated_code}\n\n"
-            f"Code explanation:\n{code_explanation}"
-        )
-
-        # Specify the path to save the file
         directory_path = "F:\\Qsek_Intern\\WOT-QA-AUTOMATION\\sample_response"
         if not os.path.exists(directory_path):
             os.makedirs(directory_path)
         
-        file_path = os.path.join(directory_path, "solution.txt")
+        file_path = os.path.join(directory_path, "solution_code.txt")
         with open(file_path, 'w') as file:
-            file.write(solution_text)
+            file.write(generated_code)
 
         st.success(f"Solution text file created at {file_path}")
-        st.text(solution_text)
+        st.text(generated_code)
