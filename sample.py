@@ -49,6 +49,12 @@ if prompt := st.chat_input():
     st.chat_message('assistant', avatar="🤖").write_stream(generate_response)
     st.session_state.messages.append({'role': 'assistant', 'content': st.session_state["full_message"]})
 
+# Function to write generated code to a text file
+def write_to_text_file(content, output_filepath):
+    """Writes content to a text file."""
+    with open(output_filepath, 'w', encoding='utf-8') as file:
+        file.write(content)
+
 # Sidebar button to generate TypeScript solution code and explanation
 if st.sidebar.button("Generate Code"):
     with st.spinner("Generating code..."):
@@ -67,8 +73,7 @@ if st.sidebar.button("Generate Code"):
             os.makedirs(directory_path)
         
         file_path = os.path.join(directory_path, "solution_code.txt")
-        with open(file_path, 'w') as file:
-            file.write(generated_code)
+        write_to_text_file(generated_code, file_path)
 
         st.success(f"Solution text file created at {file_path}")
         st.text(generated_code)
