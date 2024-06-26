@@ -1,7 +1,6 @@
 import streamlit as st
 import ollama
-import subprocess
-import tempfile
+import os
 
 st.title("Ollama Software Tester 🧑‍💻✨")
 
@@ -17,7 +16,7 @@ role_prompt = {
 }
 
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [role_prompt, {"role": "assistant", "content": "How can I assist you?"}]
+    st.session_state["messages"] = [role_prompt, {"role": 'assistant', "content": "How can I assist you?"}]
     st.session_state["model"] = "llama3"  # Default model
 
 # Sidebar for model selection using a dropdown
@@ -61,16 +60,30 @@ if st.sidebar.button("Generate Code"):
 
     st.code(generated_code, language='typescript')
 
-    # Allow user to execute the generated code
-    if st.button("Execute Code"):
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.ts') as tmp_file:
-            tmp_file.write(generated_code.encode('utf-8'))
-            tmp_file_path = tmp_file.name
+    # Allow user to create a solution text file
+    if st.button("Create Solution Text File"):
+        # Example content for root cause, explanation, suggestion, and code explanation
+        root_cause = "Example root cause explanation"
+        explanation = "Example detailed explanation"
+        suggestion = "Example suggestions to resolve the issue"
+        code_explanation = "Example explanation of the generated solution code"
 
-        result = subprocess.run(['ts-node', tmp_file_path], capture_output=True, text=True)
-        if result.returncode == 0:
-            st.success("Code executed successfully!")
-            st.text(result.stdout)
-        else:
-            st.error("Code execution failed!")
-            st.text(result.stderr)
+        solution_text = (
+            f"Root cause:\n{root_cause}\n\n"
+            f"Explanation:\n{explanation}\n\n"
+            f"Suggestion:\n{suggestion}\n\n"
+            f"Solution code:\n{generated_code}\n\n"
+            f"Code explanation:\n{code_explanation}"
+        )
+
+        # Specify the path to save the file
+        directory_path = "F:\\Qsek_Intern\\WOT-QA-AUTOMATION\\sample_response"
+        if not os.path.exists(directory_path):
+            os.makedirs(directory_path)
+        
+        file_path = os.path.join(directory_path, "solution.txt")
+        with open(file_path, 'w') as file:
+            file.write(solution_text)
+
+        st.success(f"Solution text file created at {file_path}")
+        st.text(solution_text)
