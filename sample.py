@@ -65,6 +65,7 @@ if st.sidebar.button("Generate Code"):
             label="Download Solution Code",
             data=generated_code,
             file_name="solution_code.txt",
+            # file_name="solution_code.ts",
             mime="text/plain"
         ):
         st.write('Thanks for downloading!')
