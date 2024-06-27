@@ -1,4 +1,5 @@
 import streamlit as st
+import ollama
 import json
 
 st.title("Ollama Software Tester 🧑‍💻✨")
@@ -8,10 +9,12 @@ role_prompt = {
     "role": "system",
     "content": ("You are an expert software tester. When a user provides details of failed test case suites, "
                 "analyze the failures, identify the root cause of the errors, and offer detailed suggestions to resolve them. "
+                "Generate a Full solution code in TypeScript for the problem."
                 "Provide clear, concise, and actionable insights in the following format:\n"
                 "Root cause:\n"
                 "explanation:\n"
-                "suggestion:")
+                "suggestion:\n"
+                "Full Code in Typescript with explanation")
 }
 
 if "messages" not in st.session_state:
@@ -49,18 +52,29 @@ if prompt := st.chat_input():
     st.session_state.messages.append({'role': 'assistant', 'content': st.session_state["full_message"]})
 
 # Clear chat history button
-if st.sidebar.button("Clear Chat History"):
+with st.sidebar:
+    col1 , col2 = st.columns(2)
+    
+    with col1:
+        submit1 = st.button("Clear Chat")
+
+
+
+    # Save and load chat history
+    with col2:
+        submit2 = st.button("Save Chat")
+    
+if submit1:
     st.session_state.messages = [role_prompt, {"role": 'assistant', "content": "How can I assist you?"}]
     st.success("Chat history cleared")
     st.experimental_rerun()
-
-# Save and load chat history
-if st.sidebar.button("Save Chat History"):
+    
+if submit2:
     with open("chat_history.json", "w") as file:
         json.dump(st.session_state.messages, file)
     st.success("Chat history saved")
 
-if st.sidebar.button("Load Chat History"):
+if st.sidebar.button("Load Chat"):
     with open("chat_history.json", "r") as file:
         st.session_state.messages = json.load(file)
     st.success("Chat history loaded")
@@ -80,3 +94,15 @@ if st.sidebar.button("Generate Text Report"):
         file_name="chat_history_report.txt",
         mime="text/plain"
     )
+
+
+st.markdown(
+    """
+    <style>
+    .stButton > button {
+        width: 100%;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
