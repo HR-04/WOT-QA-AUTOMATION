@@ -1,7 +1,5 @@
 import streamlit as st
-import ollama
 import json
-from fpdf import FPDF
 
 st.title("Ollama Software Tester 🧑‍💻✨")
 
@@ -68,62 +66,17 @@ if st.sidebar.button("Load Chat History"):
     st.success("Chat history loaded")
     st.experimental_rerun()
 
-# Generate PDF report for chat history
-class PDF(FPDF):
-    def header(self):
-        self.set_font("DejaVu", "B", 12)
-        self.cell(0, 10, "Chat History Report", 0, 1, "C")
-
-    def chapter_title(self, title):
-        self.set_font("DejaVu", "B", 12)
-        self.cell(0, 10, title, 0, 1, "L")
-        self.ln(10)
-
-    def chapter_body(self, body):
-        self.set_font("DejaVu", "", 12)
-        self.multi_cell(0, 10, body)
-        self.ln()
-
-    def add_message(self, role, content):
-        self.add_page()
-        self.chapter_title(f"{role.capitalize()} says:")
-        self.chapter_body(content)
-
-if st.sidebar.button("Generate PDF Report"):
-    pdf = PDF()
-    pdf.add_font("DejaVu", "", "DejaVuSans.ttf", uni=True)
-    pdf.add_font("DejaVu", "B", "DejaVuSans-Bold.ttf", uni=True)
-    pdf.set_left_margin(10)
-    pdf.set_right_margin(10)
-
+# Generate plain text report for chat history
+if st.sidebar.button("Generate Text Report"):
+    report_lines = []
     for msg in st.session_state.messages:
         if msg['role'] != 'system':  # Skip the system role message
-            pdf.add_message(msg['role'], msg['content'])
+            report_lines.append(f"{msg['role'].capitalize()}:\n{msg['content']}\n")
+    report_text = "\n".join(report_lines)
 
-    pdf_output = pdf.output(dest='S').encode('utf-8')
     st.download_button(
-        label="Download PDF Report",
-        data=pdf_output,
-        file_name="chat_history_report.pdf",
-        mime="application/pdf"
+        label="Download Text Report",
+        data=report_text,
+        file_name="chat_history_report.txt",
+        mime="text/plain"
     )
-
-# Generate TypeScript solution code and explanation
-if st.sidebar.button("Generate Code"):
-    with st.spinner("Generating code..."):
-        st.session_state.messages.append({'role': 'user', 'content': 'Generate a solution code in TypeScript for the problem.'})
-        st.session_state["full_message"] = ""
-        st.chat_message('assistant', avatar="🤖").write_stream(generate_response)
-        st.session_state.messages.append({'role': 'assistant', 'content': st.session_state["full_message"]})
-        generated_code = st.session_state["full_message"]
-
-    st.code(generated_code, language='typescript')
-
-    # Allow user to create a downloadable solution text file
-    if st.button("Create Solution Text File"):
-        st.download_button(
-            label="Download Solution Code",
-            data=generated_code,
-            file_name="solution_code.txt",
-            mime="text/plain"
-        )
