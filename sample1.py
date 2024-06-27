@@ -50,21 +50,59 @@ if prompt := st.chat_input():
     st.chat_message('assistant', avatar="🤖").write_stream(generate_response)
     st.session_state.messages.append({'role': 'assistant', 'content': st.session_state["full_message"]})
 
-# Clear chat history button
-if st.sidebar.button("Clear Chat History"):
-    st.session_state.messages = [role_prompt, {"role": 'assistant', "content": "How can I assist you?"}]
-    st.success("Chat history cleared")
 
-# Save and load chat history
-if st.sidebar.button("Save Chat History"):
-    with open("chat_history.json", "w") as file:
-        json.dump(st.session_state.messages, file)
-    st.success("Chat history saved")
+with st.sidebar:
+
+    col1,col2 = st.columns(2)
+
+    # Clear chat history button
+    with col1:
+        submit1 = st.button("Clear Chat History")
+
+    # Save and load chat history
+    with col2:
+        submit2 = st.button("Save Chat History")
+        
+        
+        
+st.markdown(
+    """
+    <style>
+    div[data-testid="stVerticalBlock"] > div {
+        gap: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <style>
+    .stButton > button {
+        width: 100%;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 if st.sidebar.button("Load Chat History"):
     with open("chat_history.json", "r") as file:
         st.session_state.messages = json.load(file)
     st.success("Chat history loaded")
+    st.rerun()
+
+
+if submit1:
+    st.session_state.messages = [role_prompt, {"role": 'assistant', "content": "How can I assist you?"}]
+    st.success("Chat history cleared")
+    st.rerun()
+    
+if submit2:
+    with open("chat_history.json", "w") as file:
+        json.dump(st.session_state.messages, file)
+    st.success("Chat history saved")
 
 # Upload test case suite
 uploaded_file = st.sidebar.file_uploader("Upload Test Case Suite", type=["json", "csv"])
