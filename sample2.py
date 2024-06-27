@@ -71,16 +71,16 @@ if st.sidebar.button("Load Chat History"):
 # Generate PDF report for chat history
 class PDF(FPDF):
     def header(self):
-        self.set_font("Arial", "B", 12)
+        self.set_font("DejaVu", "B", 12)
         self.cell(0, 10, "Chat History Report", 0, 1, "C")
 
     def chapter_title(self, title):
-        self.set_font("Arial", "B", 12)
+        self.set_font("DejaVu", "B", 12)
         self.cell(0, 10, title, 0, 1, "L")
         self.ln(10)
 
     def chapter_body(self, body):
-        self.set_font("Arial", "", 12)
+        self.set_font("DejaVu", "", 12)
         self.multi_cell(0, 10, body)
         self.ln()
 
@@ -91,6 +91,8 @@ class PDF(FPDF):
 
 if st.sidebar.button("Generate PDF Report"):
     pdf = PDF()
+    pdf.add_font("DejaVu", "", "DejaVuSans.ttf", uni=True)
+    pdf.add_font("DejaVu", "B", "DejaVuSans-Bold.ttf", uni=True)
     pdf.set_left_margin(10)
     pdf.set_right_margin(10)
 
@@ -98,7 +100,7 @@ if st.sidebar.button("Generate PDF Report"):
         if msg['role'] != 'system':  # Skip the system role message
             pdf.add_message(msg['role'], msg['content'])
 
-    pdf_output = pdf.output(dest='S').encode('latin1')
+    pdf_output = pdf.output(dest='S').encode('utf-8')
     st.download_button(
         label="Download PDF Report",
         data=pdf_output,
