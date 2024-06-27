@@ -63,18 +63,7 @@ with st.sidebar:
     with col2:
         submit2 = st.button("Save Chat History")
         
-        
-        
-st.markdown(
-    """
-    <style>
-    div[data-testid="stVerticalBlock"] > div {
-        gap: 10px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+    
 
 st.markdown(
     """
