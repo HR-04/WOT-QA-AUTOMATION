@@ -59,8 +59,6 @@ with st.sidebar:
     with col1:
         submit1 = st.button("Clear Chat")
 
-
-
     # Save and load chat history
     with col2:
         submit2 = st.button("Save Chat")
