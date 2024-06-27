@@ -10,6 +10,7 @@ role_prompt = {
     "content": ("You are an expert software tester. When a user provides details of failed test case suites, "
                 "analyze the failures, identify the root cause of the errors, and offer detailed suggestions to resolve them. "
                 "Generate a Full solution code in TypeScript for the problem."
+                "It's mandatory to provide full typescript code\n"
                 "Provide clear, concise, and actionable insights in the following format:\n"
                 "Root cause:\n"
                 "explanation:\n"
