@@ -1,0 +1,1535 @@
+Assistant:
+How can I assist you?
+
+User:
+Feature: Admin -> Billing -> Account plan # features/billing/upgradeDowngradePlan.feature:1
+16
+17 @ccs
+18 Scenario Outline: As a admin user I should be able upgrade to any plan #
+features/billing/upgradeDowngradePlan.feature:13
+19 Given user logs in for free account using username and passcode
+20locator('xpath=(//p[contains(text(), \'Launch\')])[1]/ancestor::button[1]') Element found and
+visible
+21 Given user is in free plan
+22New page title: Assembly - Empower your team
+23Breadcrumb text is : > Account Plan
+24 When user upgrades to "Upgrade to Standard" plan available
+25Failed screenshot taken... screenshots/As a admin user I should be able upgrade to any
+plan.png
+26 ✖ failed
+27 Error: Failed to find the [Plan] element after waiting for time: 30002 milliseconds
+28 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+29 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+30 Then Snapshot "Upgrade to Standard"
+31 - skipped
+32
+
+Assistant:
+Root cause:
+The root cause of the error is that the test is unable to find the "Plan" element after upgrading to the "Standard" plan, even after waiting for a certain amount of time (30002 milliseconds).
+
+Explanation:
+This issue occurs because the test script is trying to locate an element on the page, but it's not able to find it. The `waitForElementInNewPage` function in the loginPage.ts file is used to wait for the element to appear, but since it doesn't exist or is hidden, the test fails.
+
+Suggestion:
+To resolve this issue, you can try the following:
+
+1. Check if the "Plan" element exists on the page after upgrading to the "Standard" plan. If it doesn't, then you may need to adjust your upgrade flow or check for any potential issues with your UI.
+2. If the element does exist, but is not visible, you can try using a different locator strategy (e.g., CSS selector instead of XPath) to locate the element.
+3. Increase the wait time in the `waitForElementInNewPage` function if the issue persists. However, be cautious when increasing the wait time as it may lead to slower test execution.
+
+Full Code in TypeScript with explanation:
+```typescript
+// loginPage.ts
+import { Element } from 'webdriverio';
+
+export class LoginPage {
+  async waitForElementInNewPage(locator: string): Promise<void> {
+    await browser.waitForVisible(locator, { timeout: 30000 }); // wait for 30 seconds
+  }
+}
+```
+And in your test file:
+```typescript
+// upgradeDowngradePlan.steps.ts
+import { CustomWorld } from 'cypress-custom-world';
+import LoginPage from '../pageobjects/loginPage';
+
+describe('Upgrade Downgrade Plan', () => {
+  it('should be able to upgrade to any plan', () => {
+    const loginPage = new LoginPage();
+    await loginPage.waitForElementInNewPage('(//p[contains(text(), "Launch")])[1]/ancestor::button[1]'); // wait for the Launch button
+    await loginPage.upgradeToStandardPlan(); // upgrade to Standard plan
+    await loginPage.waitForElementInNewPage('//div[@class="plan-element"]'); // wait for the Plan element
+  });
+});
+```
+Note that you may need to adjust the locators and wait times based on your specific application.
+
+User:
+ @ccs
+34 Scenario Outline: As a admin user I should be able upgrade to any plan #
+features/billing/upgradeDowngradePlan.feature:13
+35 Given user logs in for free account using username and passcode
+36locator('xpath=(//p[contains(text(), \'Launch\')])[1]/ancestor::button[1]') Element found and
+visible
+37 Given user is in free plan
+38New page title: Assembly - Empower your team
+39Breadcrumb text is : > Account Plan
+40 When user upgrades to "Upgrade to Standard" plan available
+41Failed screenshot taken... screenshots/As a admin user I should be able upgrade to any
+plan.png
+42 ✖ failed
+43 Error: Failed to find the [Plan] element after waiting for time: 30001 milliseconds
+44 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+45 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+46 Then Snapshot "Upgrade to Standard"
+47 - skipped
+
+Assistant:
+Root cause:
+The root cause of the error is that the test is unable to find the "[Plan]" element after upgrading to the "Standard" plan, even after waiting for a certain amount of time (30001 milliseconds).
+
+Explanation:
+This issue occurs because the test script is trying to locate an element on the page, but it's not able to find it. The `waitForElementInNewPage` function in the loginPage.ts file is used to wait for the element to appear, but since it doesn't exist or is hidden, the test fails.
+
+Suggestion:
+To resolve this issue, you can try the following:
+
+1. Check if the "[Plan]" element exists on the page after upgrading to the "Standard" plan. If it doesn't, then you may need to adjust your upgrade flow or check for any potential issues with your UI.
+2. If the element does exist, but is not visible, you can try using a different locator strategy (e.g., CSS selector instead of XPath) to locate the element.
+3. Increase the wait time in the `waitForElementInNewPage` function if the issue persists. However, be cautious when increasing the wait time as it may lead to slower test execution.
+
+Full Code in TypeScript with explanation:
+```typescript
+// loginPage.ts
+import { Element } from 'webdriverio';
+
+export class LoginPage {
+  async waitForElementInNewPage(locator: string): Promise<void> {
+    await browser.waitForVisible(locator, { timeout: 30000 }); // wait for 30 seconds
+  }
+}
+
+// upgradeDowngradePlan.steps.ts
+import { CustomWorld } from 'cypress-custom-world';
+import LoginPage from '../pageobjects/loginPage';
+
+describe('Upgrade Downgrade Plan', () => {
+  it('should be able to upgrade to any plan', () => {
+    const loginPage = new LoginPage();
+    await loginPage.waitForElementInNewPage('(//p[contains(text(), "Launch")])[1]/ancestor::button[1]'); // wait for the Launch button
+    await loginPage.upgradeToStandardPlan(); // upgrade to Standard plan
+    await loginPage.waitForElementInNewPage('//div[@class="plan-element"]'); // wait for the Plan element
+  });
+});
+```
+Note that you may need to adjust the locators and wait times based on your specific application.
+
+User:
+@ccs
+50 Scenario Outline: As a admin user I should be able upgrade to any plan #
+features/billing/upgradeDowngradePlan.feature:13
+51 Given user logs in for free account using username and passcode
+52locator('xpath=(//p[contains(text(), \'Launch\')])[1]/ancestor::button[1]') Element found and
+visible
+53 Given user is in free plan
+54New page title: Assembly - Empower your team
+55Breadcrumb text is : > Account Plan
+56 When user upgrades to "Upgrade to Premium" plan available
+57Failed screenshot taken... screenshots/As a admin user I should be able upgrade to any
+plan.png
+58 ✖ failed
+59 Error: Failed to find the [Plan] element after waiting for time: 30000 milliseconds
+60 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+61 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+62 Then Snapshot "Upgrade to Premium"
+63 - skipped
+
+Assistant:
+Root cause:
+The root cause of the error is that the test is unable to find the  "[Plan]" element after upgrading to the "Premium" plan, even after waiting for a certain amount of time (30000 milliseconds).
+
+Explanation:
+This issue occurs because the test script is trying to locate an element on the page, but it's not able to find it. The `waitForElementInNewPage` function in the loginPage.ts file is used to wait for the element to appear, but since it doesn't exist or is hidden, the test fails.
+
+Suggestion:
+To resolve this issue, you can try the following:
+
+1. Check if the "[Plan]" element exists on the page after upgrading to the "Premium" plan. If it doesn't, then you may need to adjust your upgrade flow or check for any potential issues with your UI.
+2. If the element does exist, but is not visible, you can try using a different locator strategy (e.g., CSS selector instead of XPath) to locate the element.
+3. Increase the wait time in the `waitForElementInNewPage` function if the issue persists. However, be cautious when increasing the wait time as it may lead to slower test execution.
+
+Full Code in TypeScript with explanation:
+```typescript
+// loginPage.ts
+import { Element } from 'webdriverio';
+
+export class LoginPage {
+  async waitForElementInNewPage(locator: string): Promise<void> {
+    await browser.waitForVisible(locator, { timeout: 30000 }); // wait for 30 seconds
+  }
+}
+
+// upgradeDowngradePlan.steps.ts
+import { CustomWorld } from 'cypress-custom-world';
+import LoginPage from '../pageobjects/loginPage';
+
+describe('Upgrade Downgrade Plan', () => {
+  it('should be able to upgrade to any plan', () => {
+    const loginPage = new LoginPage();
+    await loginPage.waitForElementInNewPage('(//p[contains(text(), "Launch")])[1]/ancestor::button[1]'); // wait for the Launch button
+    await loginPage.upgradeToPremiumPlan(); // upgrade to Premium plan
+    await loginPage.waitForElementInNewPage('//div[@class="plan-element"]'); // wait for the Plan element
+  });
+});
+```
+Note that you may need to adjust the locators and wait times based on your specific application.
+
+
+
+User:
+@ccs
+66 Scenario Outline: As a admin user I should be able upgrade to any plan #
+features/billing/upgradeDowngradePlan.feature:13
+67 Given user logs in for free account using username and passcode
+68locator('xpath=(//p[contains(text(), \'Launch\')])[1]/ancestor::button[1]') Element found and
+visible
+69 Given user is in free plan
+70New page title: Assembly - Empower your team
+71Breadcrumb text is : > Account Plan
+72 When user upgrades to "Upgrade to Premium" plan available
+73Failed screenshot taken... screenshots/As a admin user I should be able upgrade to any
+plan.png
+74 ✖ failed
+75 Error: Failed to find the [Plan] element after waiting for time: 30000 milliseconds
+76 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+77 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+78 Then Snapshot "Upgrade to Premium"
+79 - skipped
+
+
+Assistant:
+Root cause:
+The root cause of the error is that the test is unable to find the [Plan] element after upgrading to the "Premium" plan, even after waiting for a certain amount of time (30000 milliseconds).
+
+Explanation:
+This issue occurs because the test script is trying to locate an element on the page, but it's not able to find it. The `waitForElementInNewPage` function in the loginPage.ts file is used to wait for the element to appear, but since it doesn't exist or is hidden, the test fails.
+
+Suggestion:
+To resolve this issue, you can try the following:
+
+1. Check if the [Plan] element exists on the page after upgrading to the "Premium" plan. If it doesn't, then you may need to adjust your upgrade flow or check for any potential issues with your UI.
+2. If the element does exist, but is not visible, you can try using a different locator strategy (e.g., CSS selector instead of XPath) to locate the element.
+3. Increase the wait time in the `waitForElementInNewPage` function if the issue persists. However, be cautious when increasing the wait time as it may lead to slower test execution.
+
+Full Code in TypeScript with explanation:
+```typescript
+// loginPage.ts
+import { Element } from 'webdriverio';
+
+export class LoginPage {
+  async waitForElementInNewPage(locator: string): Promise<void> {
+    await browser.waitForVisible(locator, { timeout: 30000 }); // wait for 30 seconds
+  }
+}
+
+// upgradeDowngradePlan.steps.ts
+import { CustomWorld } from 'cypress-custom-world';
+import LoginPage from '../pageobjects/loginPage';
+
+describe('Upgrade Downgrade Plan', () => {
+  it('should be able to upgrade to any plan', () => {
+    const loginPage = new LoginPage();
+    await loginPage.waitForElementInNewPage('(//p[contains(text(), "Launch")])[1]/ancestor::button[1]'); // wait for the Launch button
+    await loginPage.upgradeToPremiumPlan(); // upgrade to Premium plan
+    await loginPage.waitForElementInNewPage('//div[@class="plan-element"]'); // wait for the Plan element
+  });
+});
+```
+Note that you may need to adjust the locators and wait times based on your specific application.
+
+User:
+@ccs
+97 Scenario Outline: As a admin user I should be able to update company name, Logo and
+trophy value # features/general/validateCurrencyCompanyField.feature:7
+98 Given user logs in using username and passcode
+99getByTestId('workspaceCard-63cf8ce6ba15eaee56e504df') Element found and visible
+100 Given a user opens Admin page
+101New page title: Assembly - Empower your team
+102 When the user clicks on General section
+103Breadcrumb text is : > General
+104 And user updates company name and trophy
+105 Then details such as company name "Empty" and trophy "" must be updated
+106Company name is : Empty
+107Singular trophy name is :
+108 ✖ failed
+109 elementHandle.click: Timeout 30000ms exceeded.
+110 Call log:
+111 - attempting click action
+112 - waiting for element to be visible, enabled and stable
+113 - element is not enabled
+114 - retrying click action, attempt #1
+115 - waiting for element to be visible, enabled and stable
+116 - element is not enabled
+117 - retrying click action, attempt #2
+118 - waiting 20ms
+119 - waiting for element to be visible, enabled and stable
+120 - element is not enabled
+121 - retrying click action, attempt #3
+122 - waiting 100ms
+123 - waiting for element to be visible, enabled and stable
+124 - element is not enabled
+125 - retrying click action, attempt #4
+126 - waiting 100ms
+127 - waiting for element to be visible, enabled and stable
+128 - element is not enabled
+129 - retrying click action, attempt #5
+130 - waiting 500ms
+131 - waiting for element to be visible, enabled and stable
+132 - element is not enabled
+133 - retrying click action, attempt #6
+134 - waiting 500ms
+135 - waiting for element to be visible, enabled and stable
+136 - element is not enabled
+137 - retrying click action, attempt #7
+138 - waiting 500ms
+139 - waiting for element to be visible, enabled and stable
+140 - element is not enabled
+141 - retrying click action, attempt #8
+142 - waiting 500ms
+143 - waiting for element to be visible, enabled and stable
+144 - element is not enabled
+145 - retrying click action, attempt #9
+146 - waiting 500ms
+147 - waiting for element to be visible, enabled and stable
+148 - element is not enabled
+149 - retrying click action, attempt #10
+150 - waiting 500ms
+151 - waiting for element to be visible, enabled and stable
+152 - element is not enabled
+153 - retrying click action, attempt #11
+154 - waiting 500ms
+155 - waiting for element to be visible, enabled and stable
+156 - element is not enabled
+157 - retrying click action, attempt #12
+158 - waiting 500ms
+159 - waiting for element to be visible, enabled and stable
+160 - element is not enabled
+161 - retrying click action, attempt #13
+162 - waiting 500ms
+163 - waiting for element to be visible, enabled and stable
+164 - element is not enabled
+165 - retrying click action, attempt #14
+166 - waiting 500ms
+167 - waiting for element to be visible, enabled and stable
+168 - element is not enabled
+169 - retrying click action, attempt #15
+170 - waiting 500ms
+171 - waiting for element to be visible, enabled and stable
+172 - element is not enabled
+173 - retrying click action, attempt #16
+174 - waiting 500ms
+175 - waiting for element to be visible, enabled and stable
+176 - element is not enabled
+177 - retrying click action, attempt #17
+178 - waiting 500ms
+179 - waiting for element to be visible, enabled and stable
+180 - element is not enabled
+181 - retrying click action, attempt #18
+182 - waiting 500ms
+183 - waiting for element to be visible, enabled and stable
+184 - element is not enabled
+185 - retrying click action, attempt #19
+186 - waiting 500ms
+187 - waiting for element to be visible, enabled and stable
+188 - element is not enabled
+189 - retrying click action, attempt #20
+190 - waiting 500ms
+191 - waiting for element to be visible, enabled and stable
+192 - element is not enabled
+193 - retrying click action, attempt #21
+194 - waiting 500ms
+195 - waiting for element to be visible, enabled and stable
+196 - element is not enabled
+197 - retrying click action, attempt #22
+198 - waiting 500ms
+199 - waiting for element to be visible, enabled and stable
+200 - element is not enabled
+201 - retrying click action, attempt #23
+202 - waiting 500ms
+203 - waiting for element to be visible, enabled and stable
+204 - element is not enabled
+205 - retrying click action, attempt #24
+206 - waiting 500ms
+207 - waiting for element to be visible, enabled and stable
+208 - element is not enabled
+209 - retrying click action, attempt #25
+210 - waiting 500ms
+211 - waiting for element to be visible, enabled and stable
+212 - element is not enabled
+213 - retrying click action, attempt #26
+214 - waiting 500ms
+215 - waiting for element to be visible, enabled and stable
+216 - element is not enabled
+217 - retrying click action, attempt #27
+218 - waiting 500ms
+219 - waiting for element to be visible, enabled and stable
+220 - element is not enabled
+221 - retrying click action, attempt #28
+222 - waiting 500ms
+223 - waiting for element to be visible, enabled and stable
+224 - element is not enabled
+225 - retrying click action, attempt #29
+226 - waiting 500ms
+227 - waiting for element to be visible, enabled and stable
+228 - element is not enabled
+229 - retrying click action, attempt #30
+230 - waiting 500ms
+231 - waiting for element to be visible, enabled and stable
+232 - element is not enabled
+233 - retrying click action, attempt #31
+234 - waiting 500ms
+235 - waiting for element to be visible, enabled and stable
+236 - element is not enabled
+237 - retrying click action, attempt #32
+238 - waiting 500ms
+239 - waiting for element to be visible, enabled and stable
+240 - element is not enabled
+241 - retrying click action, attempt #33
+242 - waiting 500ms
+243 - waiting for element to be visible, enabled and stable
+244 - element is not enabled
+245 - retrying click action, attempt #34
+246 - waiting 500ms
+247 - waiting for element to be visible, enabled and stable
+248 - element is not enabled
+249 - retrying click action, attempt #35
+250 - waiting 500ms
+251 - waiting for element to be visible, enabled and stable
+252 - element is not enabled
+253 - retrying click action, attempt #36
+254 - waiting 500ms
+255 - waiting for element to be visible, enabled and stable
+256 - element is not enabled
+257 - retrying click action, attempt #37
+258 - waiting 500ms
+259 - waiting for element to be visible, enabled and stable
+260 - element is not enabled
+261 - retrying click action, attempt #38
+262 - waiting 500ms
+263 - waiting for element to be visible, enabled and stable
+264 - element is not enabled
+265 - retrying click action, attempt #39
+266 - waiting 500ms
+267 - waiting for element to be visible, enabled and stable
+268 - element is not enabled
+269 - retrying click action, attempt #40
+270 - waiting 500ms
+271 - waiting for element to be visible, enabled and stable
+272 - element is not enabled
+273 - retrying click action, attempt #41
+274 - waiting 500ms
+275 - waiting for element to be visible, enabled and stable
+276 - element is not enabled
+277 - retrying click action, attempt #42
+278 - waiting 500ms
+279 - waiting for element to be visible, enabled and stable
+280 - element is not enabled
+281 - retrying click action, attempt #43
+282 - waiting 500ms
+283 - waiting for element to be visible, enabled and stable
+284 - element is not enabled
+285 - retrying click action, attempt #44
+286 - waiting 500ms
+287 - waiting for element to be visible, enabled and stable
+288 - element is not enabled
+289 - retrying click action, attempt #45
+290 - waiting 500ms
+291 - waiting for element to be visible, enabled and stable
+292 - element is not enabled
+293 - retrying click action, attempt #46
+294 - waiting 500ms
+295 - waiting for element to be visible, enabled and stable
+296 - element is not enabled
+297 - retrying click action, attempt #47
+298 - waiting 500ms
+299 - waiting for element to be visible, enabled and stable
+300 - element is not enabled
+301 - retrying click action, attempt #48
+302 - waiting 500ms
+303 - waiting for element to be visible, enabled and stable
+304 - element is not enabled
+305 - retrying click action, attempt #49
+306 - waiting 500ms
+307 - waiting for element to be visible, enabled and stable
+308 - element is not enabled
+309 - retrying click action, attempt #50
+310 - waiting 500ms
+311 - waiting for element to be visible, enabled and stable
+312 - element is not enabled
+313 - retrying click action, attempt #51
+314 - waiting 500ms
+315 - waiting for element to be visible, enabled and stable
+316 - element is not enabled
+317 - retrying click action, attempt #52
+318 - waiting 500ms
+319 - waiting for element to be visible, enabled and stable
+320 - element is not enabled
+321 - retrying click action, attempt #53
+322 - waiting 500ms
+323 - waiting for element to be visible, enabled and stable
+324 - element is not enabled
+325 - retrying click action, attempt #54
+326 - waiting 500ms
+327 - waiting for element to be visible, enabled and stable
+328 - element is not enabled
+329 - retrying click action, attempt #55
+330 - waiting 500ms
+331 - waiting for element to be visible, enabled and stable
+332 - element is not enabled
+333 - retrying click action, attempt #56
+334 - waiting 500ms
+335 - waiting for element to be visible, enabled and stable
+336 - element is not enabled
+337 - retrying click action, attempt #57
+338 - waiting 500ms
+339 - waiting for element to be visible, enabled and stable
+340 - element is not enabled
+341 - retrying click action, attempt #58
+342 - waiting 500ms
+343 - waiting for element to be visible, enabled and stable
+344 - element is not enabled
+345 - retrying click action, attempt #59
+346 - waiting 500ms
+347 - waiting for element to be visible, enabled and stable
+348 - element is not enabled
+349 - retrying click action, attempt #60
+350 - waiting 500ms
+351 - waiting for element to be visible, enabled and stable
+352 - element is not enabled
+353 - retrying click action, attempt #61
+354 - waiting 500ms
+355 - waiting for element to be visible, enabled and stable
+356 - element is not enabled
+357 - retrying click action, attempt #62
+358 - waiting 500ms
+359
+360 at CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/gen
+eral/validateCurrencyCompanyField.steps.ts:102:23)
+361 Then change to previous settings "Avengers" and trophy "point"
+362 - skipped
+363 Then Snapshot "Empty-"
+364 - skipped
+
+
+Assistant:
+A failed test case suite!
+
+It looks like we have a retrying click action with a series of attempts (1-62) that are all failing because the element is not enabled. The test is trying to click on an element, but it's not visible or interactive.
+
+After 62 failed attempts, the test is then trying to change back to previous settings ("Avengers" and trophy "point"), which suggests that there might be some sort of setup or teardown logic involved in this test.
+
+Finally, the test is skipping two steps: `Then Snapshot "Empty-"`. This could be because those steps are only relevant under certain conditions or when the test is successful, rather than when it's failing.
+
+Overall, it looks like we have a test that's stuck in an infinite loop of failed attempts and is not able to complete its execution.
+
+User:
+@ccs
+367 Scenario Outline: As a admin user I should be able to update company name, Logo and
+trophy value # features/general/validateCurrencyCompanyField.feature:7
+368 Given user logs in using username and passcode
+369getByTestId('workspaceCard-63cf8ce6ba15eaee56e504df') Element found and visible
+370 Given a user opens Admin page
+371New page title: Assembly - Empower your team
+372 When the user clicks on General section
+373Breadcrumb text is : > General
+374 And user updates company name and trophy
+375 Then details such as company name "Empty" and trophy "" must be updated
+376Company name is : Empty
+377Singular trophy name is :
+378 ✖ failed
+379 elementHandle.click: Timeout 30000ms exceeded.
+380 Call log:
+381 - attempting click action
+382 - waiting for element to be visible, enabled and stable
+383 - element is not enabled
+384 - retrying click action, attempt #1
+385 - waiting for element to be visible, enabled and stable
+386 - element is not enabled
+387 - retrying click action, attempt #2
+388 - waiting 20ms
+389 - waiting for element to be visible, enabled and stable
+390 - element is not enabled
+391 - retrying click action, attempt #3
+392 - waiting 100ms
+393 - waiting for element to be visible, enabled and stable
+394 - element is not enabled
+395 - retrying click action, attempt #4
+396 - waiting 100ms
+397 - waiting for element to be visible, enabled and stable
+398 - element is not enabled
+399 - retrying click action, attempt #5
+400 - waiting 500ms
+401 - waiting for element to be visible, enabled and stable
+402 - element is not enabled
+403 - retrying click action, attempt #6
+404 - waiting 500ms
+405 - waiting for element to be visible, enabled and stable
+406 - element is not enabled
+407 - retrying click action, attempt #7
+408 - waiting 500ms
+409 - waiting for element to be visible, enabled and stable
+410 - element is not enabled
+411 - retrying click action, attempt #8
+412 - waiting 500ms
+413 - waiting for element to be visible, enabled and stable
+414 - element is not enabled
+415 - retrying click action, attempt #9
+416 - waiting 500ms
+417 - waiting for element to be visible, enabled and stable
+418 - element is not enabled
+419 - retrying click action, attempt #10
+420 - waiting 500ms
+421 - waiting for element to be visible, enabled and stable
+422 - element is not enabled
+423 - retrying click action, attempt #11
+424 - waiting 500ms
+425 - waiting for element to be visible, enabled and stable
+426 - element is not enabled
+427 - retrying click action, attempt #12
+428 - waiting 500ms
+429 - waiting for element to be visible, enabled and stable
+430 - element is not enabled
+431 - retrying click action, attempt #13
+432 - waiting 500ms
+433 - waiting for element to be visible, enabled and stable
+434 - element is not enabled
+435 - retrying click action, attempt #14
+436 - waiting 500ms
+437 - waiting for element to be visible, enabled and stable
+438 - element is not enabled
+439 - retrying click action, attempt #15
+440 - waiting 500ms
+441 - waiting for element to be visible, enabled and stable
+442 - element is not enabled
+443 - retrying click action, attempt #16
+444 - waiting 500ms
+445 - waiting for element to be visible, enabled and stable
+446 - element is not enabled
+447 - retrying click action, attempt #17
+448 - waiting 500ms
+449 - waiting for element to be visible, enabled and stable
+450 - element is not enabled
+451 - retrying click action, attempt #18
+452 - waiting 500ms
+453 - waiting for element to be visible, enabled and stable
+454 - element is not enabled
+455 - retrying click action, attempt #19
+456 - waiting 500ms
+457 - waiting for element to be visible, enabled and stable
+458 - element is not enabled
+459 - retrying click action, attempt #20
+460 - waiting 500ms
+461 - waiting for element to be visible, enabled and stable
+462 - element is not enabled
+463 - retrying click action, attempt #21
+464 - waiting 500ms
+465 - waiting for element to be visible, enabled and stable
+466 - element is not enabled
+467 - retrying click action, attempt #22
+468 - waiting 500ms
+469 - waiting for element to be visible, enabled and stable
+470 - element is not enabled
+471 - retrying click action, attempt #23
+472 - waiting 500ms
+473 - waiting for element to be visible, enabled and stable
+474 - element is not enabled
+475 - retrying click action, attempt #24
+476 - waiting 500ms
+477 - waiting for element to be visible, enabled and stable
+478 - element is not enabled
+479 - retrying click action, attempt #25
+480 - waiting 500ms
+481 - waiting for element to be visible, enabled and stable
+482 - element is not enabled
+483 - retrying click action, attempt #26
+484 - waiting 500ms
+485 - waiting for element to be visible, enabled and stable
+486 - element is not enabled
+487 - retrying click action, attempt #27
+488 - waiting 500ms
+489 - waiting for element to be visible, enabled and stable
+490 - element is not enabled
+491 - retrying click action, attempt #28
+492 - waiting 500ms
+493 - waiting for element to be visible, enabled and stable
+494 - element is not enabled
+495 - retrying click action, attempt #29
+496 - waiting 500ms
+497 - waiting for element to be visible, enabled and stable
+498 - element is not enabled
+499 - retrying click action, attempt #30
+500 - waiting 500ms
+501 - waiting for element to be visible, enabled and stable
+502 - element is not enabled
+503 - retrying click action, attempt #31
+504 - waiting 500ms
+505 - waiting for element to be visible, enabled and stable
+506 - element is not enabled
+507 - retrying click action, attempt #32
+508 - waiting 500ms
+509 - waiting for element to be visible, enabled and stable
+510 - element is not enabled
+511 - retrying click action, attempt #33
+512 - waiting 500ms
+513 - waiting for element to be visible, enabled and stable
+514 - element is not enabled
+515 - retrying click action, attempt #34
+516 - waiting 500ms
+517 - waiting for element to be visible, enabled and stable
+518 - element is not enabled
+519 - retrying click action, attempt #35
+520 - waiting 500ms
+521 - waiting for element to be visible, enabled and stable
+522 - element is not enabled
+523 - retrying click action, attempt #36
+524 - waiting 500ms
+525 - waiting for element to be visible, enabled and stable
+526 - element is not enabled
+527 - retrying click action, attempt #37
+528 - waiting 500ms
+529 - waiting for element to be visible, enabled and stable
+530 - element is not enabled
+531 - retrying click action, attempt #38
+532 - waiting 500ms
+533 - waiting for element to be visible, enabled and stable
+534 - element is not enabled
+535 - retrying click action, attempt #39
+536 - waiting 500ms
+537 - waiting for element to be visible, enabled and stable
+538 - element is not enabled
+539 - retrying click action, attempt #40
+540 - waiting 500ms
+541 - waiting for element to be visible, enabled and stable
+542 - element is not enabled
+543 - retrying click action, attempt #41
+544 - waiting 500ms
+545 - waiting for element to be visible, enabled and stable
+546 - element is not enabled
+547 - retrying click action, attempt #42
+548 - waiting 500ms
+549 - waiting for element to be visible, enabled and stable
+550 - element is not enabled
+551 - retrying click action, attempt #43
+552 - waiting 500ms
+553 - waiting for element to be visible, enabled and stable
+554 - element is not enabled
+555 - retrying click action, attempt #44
+556 - waiting 500ms
+557 - waiting for element to be visible, enabled and stable
+558 - element is not enabled
+559 - retrying click action, attempt #45
+560 - waiting 500ms
+561 - waiting for element to be visible, enabled and stable
+562 - element is not enabled
+563 - retrying click action, attempt #46
+564 - waiting 500ms
+565 - waiting for element to be visible, enabled and stable
+566 - element is not enabled
+567 - retrying click action, attempt #47
+568 - waiting 500ms
+569 - waiting for element to be visible, enabled and stable
+570 - element is not enabled
+571 - retrying click action, attempt #48
+572 - waiting 500ms
+573 - waiting for element to be visible, enabled and stable
+574 - element is not enabled
+575 - retrying click action, attempt #49
+576 - waiting 500ms
+577 - waiting for element to be visible, enabled and stable
+578 - element is not enabled
+579 - retrying click action, attempt #50
+580 - waiting 500ms
+581 - waiting for element to be visible, enabled and stable
+582 - element is not enabled
+583 - retrying click action, attempt #51
+584 - waiting 500ms
+585 - waiting for element to be visible, enabled and stable
+586 - element is not enabled
+587 - retrying click action, attempt #52
+588 - waiting 500ms
+589 - waiting for element to be visible, enabled and stable
+590 - element is not enabled
+591 - retrying click action, attempt #53
+592 - waiting 500ms
+593 - waiting for element to be visible, enabled and stable
+594 - element is not enabled
+595 - retrying click action, attempt #54
+596 - waiting 500ms
+597 - waiting for element to be visible, enabled and stable
+598 - element is not enabled
+599 - retrying click action, attempt #55
+600 - waiting 500ms
+601 - waiting for element to be visible, enabled and stable
+602 - element is not enabled
+603 - retrying click action, attempt #56
+604 - waiting 500ms
+605 - waiting for element to be visible, enabled and stable
+606 - element is not enabled
+607 - retrying click action, attempt #57
+608 - waiting 500ms
+609 - waiting for element to be visible, enabled and stable
+610 - element is not enabled
+611 - retrying click action, attempt #58
+612 - waiting 500ms
+613 - waiting for element to be visible, enabled and stable
+614 - element is not enabled
+615 - retrying click action, attempt #59
+616 - waiting 500ms
+617 - waiting for element to be visible, enabled and stable
+618 - element is not enabled
+619 - retrying click action, attempt #60
+620 - waiting 500ms
+621 - waiting for element to be visible, enabled and stable
+622 - element is not enabled
+623 - retrying click action, attempt #61
+624 - waiting 500ms
+625 - waiting for element to be visible, enabled and stable
+626 - element is not enabled
+627 - retrying click action, attempt #62
+628 - waiting 500ms
+629
+630 at CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/gen
+eral/validateCurrencyCompanyField.steps.ts:102:23)
+631 Then change to previous settings "Avengers" and trophy "point"
+632 - skipped
+633 Then Snapshot "Empty-"
+634 - skipped
+
+Assistant:
+A fascinating case of a test suite that's stuck in an infinite loop!
+
+It appears that the test is retrying the click action for element "is not enabled" with increasing attempt numbers (from #1 to #62). This suggests that the condition being checked ("element is not enabled") is not changing, causing the test to keep trying indefinitely.
+
+To help debug this issue, I'd like to ask a few questions:
+
+1. What is the expected behavior of this test? Should it succeed or fail?
+2. Can you provide more context about the element that's being clicked and its expected state (enabled/disabled)?
+3. Are there any other logs or errors that might indicate what's causing the issue?
+
+In the meantime, I'd suggest temporarily modifying the test to introduce a delay between retries, like this:
+```javascript
+for (let i = 1; i <= 62; i++) {
+  // retry click action with increasing attempt numbers
+  await retryClickAction(i);
+  if (/* condition satisfied */) {
+    break;
+  }
+}
+```
+This might help us identify whether the issue is related to timing or something else.
+
+User:
+Failures:
+637
+6381) Scenario: As a admin user I should be able upgrade to any plan (attempt 2) #
+features/billing/upgradeDowngradePlan.feature:19
+639 ✔ Before # src/hooks.ts:62
+640 ✔ Given user logs in for free account using username and passcode #
+src/steps/signin/signin&signup.steps.ts:72
+641 ✔ Given user is in free plan # src/steps/billing/upgradeDowngradePlan.steps.ts:62
+642 ✖ When user upgrades to "Upgrade to Standard" plan available #
+src/steps/billing/upgradeDowngradePlan.steps.ts:77
+643 Error: Failed to find the [Plan] element after waiting for time: 30001 milliseconds
+644 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+645 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+646 - Then Snapshot "Upgrade to Standard" # src/steps/general.steps.ts:6
+647 ✔ After # src/hooks.ts:99
+648 ✔ After # src/hooks.ts:84
+649 Attachment (text/plain): Status: FAILED. Duration:35s
+650 Attachment (image/png)
+651
+6522) Scenario: As a admin user I should be able upgrade to any plan (attempt 2) #
+features/billing/upgradeDowngradePlan.feature:20
+653 ✔ Before # src/hooks.ts:62
+654 ✔ Given user logs in for free account using username and passcode #
+src/steps/signin/signin&signup.steps.ts:72
+655 ✔ Given user is in free plan # src/steps/billing/upgradeDowngradePlan.steps.ts:62
+656 ✖ When user upgrades to "Upgrade to Premium" plan available #
+src/steps/billing/upgradeDowngradePlan.steps.ts:77
+657 Error: Failed to find the [Plan] element after waiting for time: 30000 milliseconds
+658 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+659 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+660 - Then Snapshot "Upgrade to Premium" # src/steps/general.steps.ts:6
+661 ✔ After # src/hooks.ts:99
+662 ✔ After # src/hooks.ts:84
+663 Attachment (text/plain): Status: FAILED. Duration:35s
+664 Attachment (image/png)
+665
+6663) Scenario: As a admin user I should be able to update company name, Logo and trophy
+value (attempt 2) # features/general/validateCurrencyCompanyField.feature:16
+667 ✔ Before # src/hooks.ts:62
+668 ✔ Given user logs in using username and passcode #
+src/steps/signin/signin&signup.steps.ts:53
+669 ✔ Given a user opens Admin page #
+src/steps/general/validateCurrencyCompanyField.steps.ts:9
+670 ✔ When the user clicks on General section #
+src/steps/general/validateCurrencyCompanyField.steps.ts:17
+671 ✔ And user updates company name and trophy #
+src/steps/general/validateCurrencyCompanyField.steps.ts:27
+672 ✖ Then details such as company name "Empty" and trophy "" must be updated #
+src/steps/general/validateCurrencyCompanyField.steps.ts:41
+673 elementHandle.click: Timeout 30000ms exceeded.
+674 Call log:
+675 - attempting click action
+676 - waiting for element to be visible, enabled and stable
+677 - element is not enabled
+678 - retrying click action, attempt #1
+679 - waiting for element to be visible, enabled and stable
+680 - element is not enabled
+681 - retrying click action, attempt #2
+682 - waiting 20ms
+683 - waiting for element to be visible, enabled and stable
+684 - element is not enabled
+685 - retrying click action, attempt #3
+686 - waiting 100ms
+687 - waiting for element to be visible, enabled and stable
+688 - element is not enabled
+689 - retrying click action, attempt #4
+690 - waiting 100ms
+691 - waiting for element to be visible, enabled and stable
+692 - element is not enabled
+693 - retrying click action, attempt #5
+694 - waiting 500ms
+695 - waiting for element to be visible, enabled and stable
+696 - element is not enabled
+697 - retrying click action, attempt #6
+698 - waiting 500ms
+699 - waiting for element to be visible, enabled and stable
+700 - element is not enabled
+701 - retrying click action, attempt #7
+702 - waiting 500ms
+703 - waiting for element to be visible, enabled and stable
+704 - element is not enabled
+705 - retrying click action, attempt #8
+706 - waiting 500ms
+707 - waiting for element to be visible, enabled and stable
+708 - element is not enabled
+709 - retrying click action, attempt #9
+710 - waiting 500ms
+711 - waiting for element to be visible, enabled and stable
+712 - element is not enabled
+713 - retrying click action, attempt #10
+714 - waiting 500ms
+715 - waiting for element to be visible, enabled and stable
+716 - element is not enabled
+717 - retrying click action, attempt #11
+718 - waiting 500ms
+719 - waiting for element to be visible, enabled and stable
+720 - element is not enabled
+721 - retrying click action, attempt #12
+722 - waiting 500ms
+723 - waiting for element to be visible, enabled and stable
+724 - element is not enabled
+725 - retrying click action, attempt #13
+726 - waiting 500ms
+727 - waiting for element to be visible, enabled and stable
+728 - element is not enabled
+729 - retrying click action, attempt #14
+730 - waiting 500ms
+731 - waiting for element to be visible, enabled and stable
+732 - element is not enabled
+733 - retrying click action, attempt #15
+734 - waiting 500ms
+735 - waiting for element to be visible, enabled and stable
+736 - element is not enabled
+737 - retrying click action, attempt #16
+738 - waiting 500ms
+739 - waiting for element to be visible, enabled and stable
+740 - element is not enabled
+741 - retrying click action, attempt #17
+742 - waiting 500ms
+743 - waiting for element to be visible, enabled and stable
+744 - element is not enabled
+745 - retrying click action, attempt #18
+746 - waiting 500ms
+747 - waiting for element to be visible, enabled and stable
+748 - element is not enabled
+749 - retrying click action, attempt #19
+750 - waiting 500ms
+751 - waiting for element to be visible, enabled and stable
+752 - element is not enabled
+753 - retrying click action, attempt #20
+754 - waiting 500ms
+755 - waiting for element to be visible, enabled and stable
+756 - element is not enabled
+757 - retrying click action, attempt #21
+758 - waiting 500ms
+759 - waiting for element to be visible, enabled and stable
+760 - element is not enabled
+761 - retrying click action, attempt #22
+762 - waiting 500ms
+763 - waiting for element to be visible, enabled and stable
+764 - element is not enabled
+765 - retrying click action, attempt #23
+766 - waiting 500ms
+767 - waiting for element to be visible, enabled and stable
+768 - element is not enabled
+769 - retrying click action, attempt #24
+770 - waiting 500ms
+771 - waiting for element to be visible, enabled and stable
+772 - element is not enabled
+773 - retrying click action, attempt #25
+774 - waiting 500ms
+775 - waiting for element to be visible, enabled and stable
+776 - element is not enabled
+777 - retrying click action, attempt #26
+778 - waiting 500ms
+779 - waiting for element to be visible, enabled and stable
+780 - element is not enabled
+781 - retrying click action, attempt #27
+782 - waiting 500ms
+783 - waiting for element to be visible, enabled and stable
+784 - element is not enabled
+785 - retrying click action, attempt #28
+786 - waiting 500ms
+787 - waiting for element to be visible, enabled and stable
+788 - element is not enabled
+789 - retrying click action, attempt #29
+790 - waiting 500ms
+791 - waiting for element to be visible, enabled and stable
+792 - element is not enabled
+793 - retrying click action, attempt #30
+794 - waiting 500ms
+795 - waiting for element to be visible, enabled and stable
+796 - element is not enabled
+797 - retrying click action, attempt #31
+798 - waiting 500ms
+799 - waiting for element to be visible, enabled and stable
+800 - element is not enabled
+801 - retrying click action, attempt #32
+802 - waiting 500ms
+803 - waiting for element to be visible, enabled and stable
+804 - element is not enabled
+805 - retrying click action, attempt #33
+806 - waiting 500ms
+807 - waiting for element to be visible, enabled and stable
+808 - element is not enabled
+809 - retrying click action, attempt #34
+810 - waiting 500ms
+811 - waiting for element to be visible, enabled and stable
+812 - element is not enabled
+813 - retrying click action, attempt #35
+814 - waiting 500ms
+815 - waiting for element to be visible, enabled and stable
+816 - element is not enabled
+817 - retrying click action, attempt #36
+818 - waiting 500ms
+819 - waiting for element to be visible, enabled and stable
+820 - element is not enabled
+821 - retrying click action, attempt #37
+822 - waiting 500ms
+823 - waiting for element to be visible, enabled and stable
+824 - element is not enabled
+825 - retrying click action, attempt #38
+826 - waiting 500ms
+827 - waiting for element to be visible, enabled and stable
+828 - element is not enabled
+829 - retrying click action, attempt #39
+830 - waiting 500ms
+831 - waiting for element to be visible, enabled and stable
+832 - element is not enabled
+833 - retrying click action, attempt #40
+834 - waiting 500ms
+835 - waiting for element to be visible, enabled and stable
+836 - element is not enabled
+837 - retrying click action, attempt #41
+838 - waiting 500ms
+839 - waiting for element to be visible, enabled and stable
+840 - element is not enabled
+841 - retrying click action, attempt #42
+842 - waiting 500ms
+843 - waiting for element to be visible, enabled and stable
+844 - element is not enabled
+845 - retrying click action, attempt #43
+846 - waiting 500ms
+847 - waiting for element to be visible, enabled and stable
+848 - element is not enabled
+849 - retrying click action, attempt #44
+850 - waiting 500ms
+851 - waiting for element to be visible, enabled and stable
+852 - element is not enabled
+853 - retrying click action, attempt #45
+854 - waiting 500ms
+855 - waiting for element to be visible, enabled and stable
+856 - element is not enabled
+857 - retrying click action, attempt #46
+858 - waiting 500ms
+859 - waiting for element to be visible, enabled and stable
+860 - element is not enabled
+861 - retrying click action, attempt #47
+862 - waiting 500ms
+863 - waiting for element to be visible, enabled and stable
+864 - element is not enabled
+865 - retrying click action, attempt #48
+866 - waiting 500ms
+867 - waiting for element to be visible, enabled and stable
+868 - element is not enabled
+869 - retrying click action, attempt #49
+870 - waiting 500ms
+871 - waiting for element to be visible, enabled and stable
+872 - element is not enabled
+873 - retrying click action, attempt #50
+874 - waiting 500ms
+875 - waiting for element to be visible, enabled and stable
+876 - element is not enabled
+877 - retrying click action, attempt #51
+878 - waiting 500ms
+879 - waiting for element to be visible, enabled and stable
+880 - element is not enabled
+881 - retrying click action, attempt #52
+882 - waiting 500ms
+883 - waiting for element to be visible, enabled and stable
+884 - element is not enabled
+885 - retrying click action, attempt #53
+886 - waiting 500ms
+887 - waiting for element to be visible, enabled and stable
+888 - element is not enabled
+889 - retrying click action, attempt #54
+890 - waiting 500ms
+891 - waiting for element to be visible, enabled and stable
+892 - element is not enabled
+893 - retrying click action, attempt #55
+894 - waiting 500ms
+895 - waiting for element to be visible, enabled and stable
+896 - element is not enabled
+897 - retrying click action, attempt #56
+898 - waiting 500ms
+899 - waiting for element to be visible, enabled and stable
+900 - element is not enabled
+901 - retrying click action, attempt #57
+902 - waiting 500ms
+903 - waiting for element to be visible, enabled and stable
+904 - element is not enabled
+905 - retrying click action, attempt #58
+906 - waiting 500ms
+907 - waiting for element to be visible, enabled and stable
+908 - element is not enabled
+909 - retrying click action, attempt #59
+910 - waiting 500ms
+911 - waiting for element to be visible, enabled and stable
+912 - element is not enabled
+913 - retrying click action, attempt #60
+914 - waiting 500ms
+915 - waiting for element to be visible, enabled and stable
+916 - element is not enabled
+917 - retrying click action, attempt #61
+918 - waiting 500ms
+919 - waiting for element to be visible, enabled and stable
+920 - element is not enabled
+921 - retrying click action, attempt #62
+922 - waiting 500ms
+923
+924 at CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/gen
+eral/validateCurrencyCompanyField.steps.ts:102:23)
+
+Assistant:
+A failed test case suite!
+
+Let's analyze the log:
+
+* The test case is retrying a click action 62 times, with each attempt waiting 500ms for the element to be visible, enabled, and stable.
+* The issue seems to be that the element is not enabled during all these attempts.
+
+This suggests that there might be an issue with the element's availability or its enabling condition. It could be due to a variety of reasons such as:
+
+1. Element is not properly located on the page.
+2. Element is not enabled due to some condition or validation.
+3. There is a timing issue where the element becomes available after the retry attempts.
+
+To resolve this, we can try the following:
+
+* Verify the element's location and availability on the page.
+* Check if there are any enabling conditions or validations that need to be met before the element becomes clickable.
+* If it's a timing issue, consider adding more sleep time between retries or using a more robust retry mechanism.
+
+By analyzing the log and identifying the root cause of the issue, we can develop a plan to resolve this failed test case suite!
+
+User:
+- Then change to previous settings "Avengers" and trophy "point" #
+src/steps/general/validateCurrencyCompanyField.steps.ts:153
+926 - Then Snapshot "Empty-" # src/steps/general.steps.ts:6
+927 ✔ After # src/hooks.ts:99
+928 ✔ After # src/hooks.ts:84
+929 Attachment (text/plain): Status: FAILED. Duration:35s
+930 Attachment (image/png)
+931
+932Warnings:
+933
+9341) Scenario: As a admin user I should be able upgrade to any plan (attempt 1, retried) #
+features/billing/upgradeDowngradePlan.feature:19
+935 ✔ Before # src/hooks.ts:62
+936 ✔ Given user logs in for free account using username and passcode #
+src/steps/signin/signin&signup.steps.ts:72
+937 ✔ Given user is in free plan # src/steps/billing/upgradeDowngradePlan.steps.ts:62
+938 ✖ When user upgrades to "Upgrade to Standard" plan available #
+src/steps/billing/upgradeDowngradePlan.steps.ts:77
+939 Error: Failed to find the [Plan] element after waiting for time: 30002 milliseconds
+940 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+941 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+942 - Then Snapshot "Upgrade to Standard" # src/steps/general.steps.ts:6
+943 ✔ After # src/hooks.ts:99
+944 ✔ After # src/hooks.ts:84
+945 Attachment (text/plain): Status: FAILED. Duration:35s
+946 Attachment (image/png)
+947
+9482) Scenario: As a admin user I should be able upgrade to any plan (attempt 1, retried) #
+features/billing/upgradeDowngradePlan.feature:20
+949 ✔ Before # src/hooks.ts:62
+950 ✔ Given user logs in for free account using username and passcode #
+src/steps/signin/signin&signup.steps.ts:72
+951 ✔ Given user is in free plan # src/steps/billing/upgradeDowngradePlan.steps.ts:62
+952 ✖ When user upgrades to "Upgrade to Premium" plan available #
+src/steps/billing/upgradeDowngradePlan.steps.ts:77
+953 Error: Failed to find the [Plan] element after waiting for time: 30000 milliseconds
+954 at loginPage.waitForElementInNewPage
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/pageobje
+cts/loginPage.ts:469:15)
+955 at async CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/billi
+ng/upgradeDowngradePlan.steps.ts:86:22)
+956 - Then Snapshot "Upgrade to Premium" # src/steps/general.steps.ts:6
+957 ✔ After # src/hooks.ts:99
+958 ✔ After # src/hooks.ts:84
+959 Attachment (text/plain): Status: FAILED. Duration:35s
+960 Attachment (image/png)
+961
+9623) Scenario: As a admin user I should be able to update company name, Logo and trophy
+value (attempt 1, retried) # features/general/validateCurrencyCompanyField.feature:16
+963 ✔ Before # src/hooks.ts:62
+964 ✔ Given user logs in using username and passcode #
+src/steps/signin/signin&signup.steps.ts:53
+965 ✔ Given a user opens Admin page #
+src/steps/general/validateCurrencyCompanyField.steps.ts:9
+966 ✔ When the user clicks on General section #
+src/steps/general/validateCurrencyCompanyField.steps.ts:17
+967 ✔ And user updates company name and trophy #
+src/steps/general/validateCurrencyCompanyField.steps.ts:27
+968 ✖ Then details such as company name "Empty" and trophy "" must be updated #
+src/steps/general/validateCurrencyCompanyField.steps.ts:41
+969 elementHandle.click: Timeout 30000ms exceeded.
+970 Call log:
+971 - attempting click action
+972 - waiting for element to be visible, enabled and stable
+973 - element is not enabled
+974 - retrying click action, attempt #1
+975 - waiting for element to be visible, enabled and stable
+976 - element is not enabled
+977 - retrying click action, attempt #2
+978 - waiting 20ms
+979 - waiting for element to be visible, enabled and stable
+980 - element is not enabled
+981 - retrying click action, attempt #3
+982 - waiting 100ms
+983 - waiting for element to be visible, enabled and stable
+984 - element is not enabled
+985 - retrying click action, attempt #4
+986 - waiting 100ms
+987 - waiting for element to be visible, enabled and stable
+988 - element is not enabled
+989 - retrying click action, attempt #5
+990 - waiting 500ms
+991 - waiting for element to be visible, enabled and stable
+992 - element is not enabled
+993 - retrying click action, attempt #6
+994 - waiting 500ms
+995 - waiting for element to be visible, enabled and stable
+996 - element is not enabled
+997 - retrying click action, attempt #7
+998 - waiting 500ms
+999 - waiting for element to be visible, enabled and stable
+1000 - element is not enabled
+1001 - retrying click action, attempt #8
+1002 - waiting 500ms
+1003 - waiting for element to be visible, enabled and stable
+1004 - element is not enabled
+1005 - retrying click action, attempt #9
+1006 - waiting 500ms
+1007 - waiting for element to be visible, enabled and stable
+1008 - element is not enabled
+1009 - retrying click action, attempt #10
+1010 - waiting 500ms
+1011 - waiting for element to be visible, enabled and stable
+1012 - element is not enabled
+1013 - retrying click action, attempt #11
+1014 - waiting 500ms
+1015 - waiting for element to be visible, enabled and stable
+1016 - element is not enabled
+1017 - retrying click action, attempt #12
+1018 - waiting 500ms
+1019 - waiting for element to be visible, enabled and stable
+1020 - element is not enabled
+1021 - retrying click action, attempt #13
+1022 - waiting 500ms
+1023 - waiting for element to be visible, enabled and stable
+1024 - element is not enabled
+1025 - retrying click action, attempt #14
+1026 - waiting 500ms
+1027 - waiting for element to be visible, enabled and stable
+1028 - element is not enabled
+1029 - retrying click action, attempt #15
+1030 - waiting 500ms
+1031 - waiting for element to be visible, enabled and stable
+1032 - element is not enabled
+1033 - retrying click action, attempt #16
+1034 - waiting 500ms
+1035 - waiting for element to be visible, enabled and stable
+1036 - element is not enabled
+1037 - retrying click action, attempt #17
+1038 - waiting 500ms
+1039 - waiting for element to be visible, enabled and stable
+1040 - element is not enabled
+1041 - retrying click action, attempt #18
+1042 - waiting 500ms
+1043 - waiting for element to be visible, enabled and stable
+1044 - element is not enabled
+1045 - retrying click action, attempt #19
+1046 - waiting 500ms
+1047 - waiting for element to be visible, enabled and stable
+1048 - element is not enabled
+1049 - retrying click action, attempt #20
+1050 - waiting 500ms
+1051 - waiting for element to be visible, enabled and stable
+1052 - element is not enabled
+1053 - retrying click action, attempt #21
+1054 - waiting 500ms
+1055 - waiting for element to be visible, enabled and stable
+1056 - element is not enabled
+1057 - retrying click action, attempt #22
+1058 - waiting 500ms
+1059 - waiting for element to be visible, enabled and stable
+1060 - element is not enabled
+1061 - retrying click action, attempt #23
+1062 - waiting 500ms
+1063 - waiting for element to be visible, enabled and stable
+1064 - element is not enabled
+1065 - retrying click action, attempt #24
+1066 - waiting 500ms
+1067 - waiting for element to be visible, enabled and stable
+1068 - element is not enabled
+1069 - retrying click action, attempt #25
+1070 - waiting 500ms
+1071 - waiting for element to be visible, enabled and stable
+1072 - element is not enabled
+1073 - retrying click action, attempt #26
+1074 - waiting 500ms
+1075 - waiting for element to be visible, enabled and stable
+1076 - element is not enabled
+1077 - retrying click action, attempt #27
+1078 - waiting 500ms
+1079 - waiting for element to be visible, enabled and stable
+1080 - element is not enabled
+1081 - retrying click action, attempt #28
+1082 - waiting 500ms
+1083 - waiting for element to be visible, enabled and stable
+1084 - element is not enabled
+1085 - retrying click action, attempt #29
+1086 - waiting 500ms
+1087 - waiting for element to be visible, enabled and stable
+1088 - element is not enabled
+1089 - retrying click action, attempt #30
+1090 - waiting 500ms
+1091 - waiting for element to be visible, enabled and stable
+1092 - element is not enabled
+1093 - retrying click action, attempt #31
+1094 - waiting 500ms
+1095 - waiting for element to be visible, enabled and stable
+1096 - element is not enabled
+1097 - retrying click action, attempt #32
+1098 - waiting 500ms
+1099 - waiting for element to be visible, enabled and stable
+1100 - element is not enabled
+1101 - retrying click action, attempt #33
+1102 - waiting 500ms
+1103 - waiting for element to be visible, enabled and stable
+1104 - element is not enabled
+1105 - retrying click action, attempt #34
+1106 - waiting 500ms
+1107 - waiting for element to be visible, enabled and stable
+1108 - element is not enabled
+1109 - retrying click action, attempt #35
+1110 - waiting 500ms
+1111 - waiting for element to be visible, enabled and stable
+1112 - element is not enabled
+1113 - retrying click action, attempt #36
+1114 - waiting 500ms
+1115 - waiting for element to be visible, enabled and stable
+1116 - element is not enabled
+1117 - retrying click action, attempt #37
+1118 - waiting 500ms
+1119 - waiting for element to be visible, enabled and stable
+1120 - element is not enabled
+1121 - retrying click action, attempt #38
+1122 - waiting 500ms
+1123 - waiting for element to be visible, enabled and stable
+1124 - element is not enabled
+1125 - retrying click action, attempt #39
+1126 - waiting 500ms
+1127 - waiting for element to be visible, enabled and stable
+1128 - element is not enabled
+1129 - retrying click action, attempt #40
+1130 - waiting 500ms
+1131 - waiting for element to be visible, enabled and stable
+1132 - element is not enabled
+1133 - retrying click action, attempt #41
+1134 - waiting 500ms
+1135 - waiting for element to be visible, enabled and stable
+1136 - element is not enabled
+1137 - retrying click action, attempt #42
+1138 - waiting 500ms
+1139 - waiting for element to be visible, enabled and stable
+1140 - element is not enabled
+1141 - retrying click action, attempt #43
+1142 - waiting 500ms
+1143 - waiting for element to be visible, enabled and stable
+1144 - element is not enabled
+1145 - retrying click action, attempt #44
+1146 - waiting 500ms
+1147 - waiting for element to be visible, enabled and stable
+1148 - element is not enabled
+1149 - retrying click action, attempt #45
+1150 - waiting 500ms
+1151 - waiting for element to be visible, enabled and stable
+1152 - element is not enabled
+1153 - retrying click action, attempt #46
+1154 - waiting 500ms
+1155 - waiting for element to be visible, enabled and stable
+1156 - element is not enabled
+1157 - retrying click action, attempt #47
+1158 - waiting 500ms
+1159 - waiting for element to be visible, enabled and stable
+1160 - element is not enabled
+1161 - retrying click action, attempt #48
+1162 - waiting 500ms
+1163 - waiting for element to be visible, enabled and stable
+1164 - element is not enabled
+1165 - retrying click action, attempt #49
+1166 - waiting 500ms
+1167 - waiting for element to be visible, enabled and stable
+1168 - element is not enabled
+1169 - retrying click action, attempt #50
+1170 - waiting 500ms
+1171 - waiting for element to be visible, enabled and stable
+1172 - element is not enabled
+1173 - retrying click action, attempt #51
+1174 - waiting 500ms
+1175 - waiting for element to be visible, enabled and stable
+1176 - element is not enabled
+1177 - retrying click action, attempt #52
+1178 - waiting 500ms
+1179 - waiting for element to be visible, enabled and stable
+1180 - element is not enabled
+1181 - retrying click action, attempt #53
+1182 - waiting 500ms
+1183 - waiting for element to be visible, enabled and stable
+1184 - element is not enabled
+1185 - retrying click action, attempt #54
+1186 - waiting 500ms
+1187 - waiting for element to be visible, enabled and stable
+1188 - element is not enabled
+1189 - retrying click action, attempt #55
+1190 - waiting 500ms
+1191 - waiting for element to be visible, enabled and stable
+1192 - element is not enabled
+1193 - retrying click action, attempt #56
+1194 - waiting 500ms
+1195 - waiting for element to be visible, enabled and stable
+1196 - element is not enabled
+1197 - retrying click action, attempt #57
+1198 - waiting 500ms
+1199 - waiting for element to be visible, enabled and stable
+1200 - element is not enabled
+1201 - retrying click action, attempt #58
+1202 - waiting 500ms
+1203 - waiting for element to be visible, enabled and stable
+1204 - element is not enabled
+1205 - retrying click action, attempt #59
+1206 - waiting 500ms
+1207 - waiting for element to be visible, enabled and stable
+1208 - element is not enabled
+1209 - retrying click action, attempt #60
+1210 - waiting 500ms
+1211 - waiting for element to be visible, enabled and stable
+1212 - element is not enabled
+1213 - retrying click action, attempt #61
+1214 - waiting 500ms
+1215 - waiting for element to be visible, enabled and stable
+1216 - element is not enabled
+1217 - retrying click action, attempt #62
+1218 - waiting 500ms
+1219
+1220 at CustomWorld.<anonymous>
+(/home/manish/actions-runner/_work/assembly_automation/assembly_automation/src/steps/gen
+eral/validateCurrencyCompanyField.steps.ts:102:23)
+1221 - Then change to previous settings "Avengers" and trophy "point" #
+src/steps/general/validateCurrencyCompanyField.steps.ts:153
+1222 - Then Snapshot "Empty-" # src/steps/general.steps.ts:6
+1223 ✔ After # src/hooks.ts:99
+1224 ✔ After # src/hooks.ts:84
+1225 Attachment (text/plain): Status: FAILED. Duration:35s
+1226 Attachment (image/png)
+1227
+12284 scenarios (3 failed, 1 passed)
+122919 steps (3 failed, 4 skipped, 12 passed)
+12305m18.795s (executing steps: 5m18.597s)
+1231Error: Process completed with exit code 1.
+
+Assistant:
+A failed test case suite!
+
+Let's break it down:
+
+* The test script seems to be stuck in an infinite loop, retrying a click action on an element that is not enabled (1136-1165). This suggests that there might be an issue with the UI element or its enabling conditions.
+* The retry attempts are being made every 500ms, which could be causing the test to run slowly and potentially leading to timeouts or failures.
+* After the 60th attempt, the script moves on to another step (1219), but it's unclear what this step does or whether it's related to the previous issue.
+
+Some potential next steps:
+
+1. Inspect the UI element being targeted by the click action to ensure it is indeed not enabled and why.
+2. Check if there are any enabling conditions that need to be met before attempting to interact with the element.
+3. Consider implementing a more robust retry mechanism or timeout settings to avoid getting stuck in an infinite loop.
+4. Review the test script's logic to identify any potential issues or bottlenecks.
+
+Overall, this failure suggests that there might be some UI-related issues or timing problems that need to be addressed to get the test running successfully.
