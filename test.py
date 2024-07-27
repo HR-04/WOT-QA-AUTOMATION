@@ -20,10 +20,10 @@ role_prompt = {
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = [role_prompt, {"role": 'assistant', "content": "How can I assist you?"}]
-    st.session_state["model"] = "llama3"  # Default model
+    st.session_state["model"] = "llama3.1"  # Default model
 
 # Sidebar for model selection using a dropdown
-model_choice = st.sidebar.selectbox("Choose a model", ("llama3", "codellama"))
+model_choice = st.sidebar.selectbox("Choose a model", ("llama3.1", "codellama"))
 
 if model_choice and model_choice != st.session_state["model"]:
     st.session_state["model"] = model_choice
